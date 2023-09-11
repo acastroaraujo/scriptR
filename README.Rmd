@@ -72,7 +72,7 @@ It's then very easy to work with these datasets.
 
 Last example:
 
-```{r}
+```{r, message=FALSE}
 library(dplyr)
 pkg_df <- out$functions |>
   count(f, pkg, sort = TRUE)

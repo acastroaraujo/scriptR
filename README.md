@@ -84,8 +84,8 @@ out
 #> [1] "https://raw.githubusercontent.com/acastroaraujo/ccc/master/data-raw/04-docterms.R"
 dplyr::glimpse(out$code)
 #> Rows: 124
-#> Columns: 10
-#> $ script   <chr> "https://raw.githubusercontent.com/acastroaraujo/ccc/master/d…
+#> Columns: 11
+#> $ script   <chr> "04-docterms.R", "04-docterms.R", "04-docterms.R", "04-docter…
 #> $ text     <chr> "library", "(", "tidyverse", ")", "source", "(", "\"data-raw/…
 #> $ token    <chr> "SYMBOL_FUNCTION_CALL", "'('", "SYMBOL", "')'", "SYMBOL_FUNCT…
 #> $ line1    <int> 2, 2, 2, 2, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7…
@@ -95,12 +95,13 @@ dplyr::glimpse(out$code)
 #> $ id       <int> 3, 4, 6, 7, 16, 17, 19, 20, 31, 32, 34, 35, 37, 38, 50, 51, 5…
 #> $ parent   <int> 5, 12, 8, 12, 18, 25, 21, 25, 33, 45, 36, 43, 39, 43, 52, 67,…
 #> $ terminal <lgl> TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, T…
+#> $ dir      <chr> "https://raw.githubusercontent.com/acastroaraujo/ccc/master/d…
 dplyr::glimpse(out$functions)
 #> Rows: 17
-#> Columns: 10
+#> Columns: 11
 #> $ f        <chr> "library", "source", "read_rds", "unique", "length", "count",…
 #> $ pkg      <chr> "base", "base", "readr", "base", "base", "dplyr", "dplyr", "d…
-#> $ script   <chr> "https://raw.githubusercontent.com/acastroaraujo/ccc/master/d…
+#> $ script   <chr> "04-docterms.R", "04-docterms.R", "04-docterms.R", "04-docter…
 #> $ line1    <int> 2, 3, 5, 7, 8, 11, 12, 15, 16, 16, 17, 20, 22, 27, 28, 29, 32
 #> $ col1     <int> 1, 1, 7, 9, 11, 3, 3, 3, 3, 13, 3, 3, 12, 3, 14, 13, 10
 #> $ line2    <int> 2, 3, 5, 7, 8, 11, 12, 15, 16, 16, 17, 20, 22, 27, 28, 29, 32
@@ -108,6 +109,7 @@ dplyr::glimpse(out$functions)
 #> $ id       <int> 3, 16, 34, 53, 73, 96, 109, 139, 156, 159, 179, 203, 227, 255…
 #> $ parent   <int> 5, 18, 36, 55, 75, 98, 111, 141, 158, 161, 181, 205, 229, 257…
 #> $ terminal <lgl> TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, T…
+#> $ dir      <chr> "https://raw.githubusercontent.com/acastroaraujo/ccc/master/d…
 out$pkg_search
 #>  [1] "lubridate" "forcats"   "stringr"   "dplyr"     "purrr"     "readr"    
 #>  [7] "tidyr"     "tibble"    "ggplot2"   "tidyverse" "stats"     "graphics" 
@@ -120,14 +122,6 @@ Last example:
 
 ``` r
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 pkg_df <- out$functions |>
   count(f, pkg, sort = TRUE)
 
@@ -155,10 +149,10 @@ This is also when we would use the other `scriptR` functions:
 
 ``` r
 get_unused_objs(out$code)
-#> # A tibble: 1 × 10
-#>   script               text  token line1  col1 line2  col2    id parent terminal
-#>   <chr>                <chr> <chr> <int> <int> <int> <int> <int>  <int> <lgl>   
-#> 1 https://raw.githubu… n_wo… SYMB…    22     1    22     7   224    226 TRUE
+#> # A tibble: 1 × 11
+#>   script        text   token line1  col1 line2  col2    id parent terminal dir  
+#>   <chr>         <chr>  <chr> <int> <int> <int> <int> <int>  <int> <lgl>    <chr>
+#> 1 04-docterms.R n_wor… SYMB…    22     1    22     7   224    226 TRUE     http…
 
 get_conflicts(out$pkg_search) |> 
   filter(f %in% unique(out$functions$f)) |> 
