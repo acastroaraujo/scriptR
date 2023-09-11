@@ -1,0 +1,101 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# scriptR
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+The goal of scriptR is to parse R scripts into a format that is suitable for analysis.
+
+## Installation
+
+You can install the development version of `scriptR` from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("acastroaraujo/scriptR")
+```
+
+## Example
+
+The `scriptR` package currently contains three functions:
+
+-   `parse_script`: creates an R6 object with some datasets available via the `$` operator.
+
+    -   `$code` has a modified version of what you'd get with `getParseData()`
+
+    -   `$functions` has a modified version of `$code`, such that only function calls are retained.
+
+    -   `$pkg_search` contains the `search()` path for the libraries loaded in the scripts via `library()`.
+
+-   `get_unused_objects`: produces the unused objects contained in a script (`$code`).
+
+-   `get_conflicts`: produces the conflicts among packages.
+
+This last function will work with *any* vector of installed package names.
+
+For example:
+
+```{r}
+library(scriptR)
+
+get_conflicts(c("network", "igraph", "dplyr"))
+```
+
+More examples:
+
+```{r}
+url <- "https://raw.githubusercontent.com/acastroaraujo/ccc/master/data-raw/04-docterms.R"
+
+out <- parse_script(url)
+out
+dplyr::glimpse(out$code)
+dplyr::glimpse(out$functions)
+out$pkg_search
+```
+
+It's then very easy to work with these datasets.
+
+Last example:
+
+```{r}
+library(dplyr)
+pkg_df <- out$functions |>
+  count(f, pkg, sort = TRUE)
+
+pkg_df <- pkg_df |>
+  group_by(pkg) |>
+  summarize(
+    n_functions = length(pkg),
+    n = sum(n)
+  ) |>
+  arrange(n_functions)
+
+## NA in this example means that the pkg was specified via the :: operator
+## probably a good a idea to change this
+pkg_df 
+```
+
+This is also when we would use the other `scriptR` functions:
+
+```{r}
+get_unused_objs(out$code)
+
+get_conflicts(out$pkg_search) |> 
+  filter(f %in% unique(out$functions$f)) |> 
+  select_if(\(x) any(x == 1 | class(x) == "character"))
+```

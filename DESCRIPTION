@@ -2,10 +2,18 @@ Package: scriptR
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Andrés Castro Araújo
+Maintainer: <acastroaraujo@gmail.com>
+Description: This package parses scripts into a format that is suitable for analysis.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/acastroaraujo/scriptR
+BugReports: https://github.com/acastroaraujo/scriptR/issues
+Imports: 
+    dplyr,
+    purrr,
+    R6,
+    rlang,
+    stringr
+RoxygenNote: 7.2.3
