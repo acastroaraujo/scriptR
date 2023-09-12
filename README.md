@@ -40,7 +40,11 @@ The `scriptR` package currently contains three functions:
 
 - `get_conflicts`: produces the conflicts among packages.
 
-This last function will work with *any* vector of installed package
+- `get_library_search`: produces the `search()` path for a character
+  vector of libraries that will get loaded via `library()`. Note that
+  the order matters!
+
+The last two functions will work with *any* vector of installed package
 names.
 
 For example:
@@ -71,6 +75,14 @@ get_conflicts(c("network", "igraph", "dplyr"))
 #> 17 groups                       0      1     1
 #> 18 %>%                          0      1     1
 #> 19 union                        0      1     1
+get_library_search(c("statnet", "tidyverse"))
+#>  [1] "lubridate"      "forcats"        "stringr"        "dplyr"         
+#>  [5] "purrr"          "readr"          "tidyr"          "tibble"        
+#>  [9] "ggplot2"        "tidyverse"      "statnet"        "tsna"          
+#> [13] "sna"            "statnet.common" "ergm.count"     "tergm"         
+#> [17] "networkDynamic" "ergm"           "network"        "stats"         
+#> [21] "graphics"       "grDevices"      "utils"          "datasets"      
+#> [25] "methods"        "base"
 ```
 
 More examples:

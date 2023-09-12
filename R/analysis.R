@@ -109,3 +109,30 @@ get_unused_objs <- function(code) {
   return(code[ii, ])
 
 }
+
+
+#' Get Script Search Path
+#'
+#' @param x a character vector of package names
+#'
+#' @return a character vector of package names
+#' @export
+#'
+get_library_search <- function(x) {
+  stopifnot(all(class(x) == "character"))
+
+  out_file <- paste0(tempdir(), "temp.R")
+
+  write(paste(c(
+    "suppressMessages({",
+    stringr::str_glue("library({x})"),
+    "})",
+    "search()"),
+    collapse = "\n"),
+    file = out_file
+  )
+
+  out_search <- system(paste("Rscript", out_file), intern = TRUE)
+  return(unlist(stringr::str_extract_all(out_search, "(?<=\"package:).+?(?=\")")))
+
+}
