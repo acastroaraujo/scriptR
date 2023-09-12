@@ -6,8 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of scriptR is to parse R scripts into a format that is suitable
-for analysis.
+The goal of `scriptR` is to parse R scripts into a format that is
+suitable for data analysis.
 
 ## Installation
 
@@ -21,7 +21,7 @@ devtools::install_github("acastroaraujo/scriptR")
 
 ## Example
 
-The `scriptR` package currently contains three functions:
+The `scriptR` package currently contains four functions:
 
 - `parse_script`: creates an R6 object with some datasets available via
   the `$` operator.
